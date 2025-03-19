@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculadora de Yardas Cúbicas H-G CONCRETE</title>
+  <meta name="description" content="Calculadora de volumen para paredes, columnas y áreas en pies cuadrados de H-G Concrete. Aprende las fórmulas y calcula fácilmente." />
+  <script>
+    function mostrarFormulario(tipo) {
+      document.getElementById('formularioCilindro').style.display = tipo === 'cilindro' ? 'block' : 'none';
+      document.getElementById('formularioRectangulo').style.display = tipo === 'rectangulo' ? 'block' : 'none';
+      document.getElementById('formularioAreas').style.display = tipo === 'areas' ? 'block' : 'none';
+      document.getElementById('resultado').innerHTML = '';
+    }
+
+    function calcularCilindro() {
+      const diametro = parseFloat(document.getElementById('diametro').value);
+      const altura = parseFloat(document.getElementById('alturaCilindro').value);
+      if (isNaN(diametro) || isNaN(altura)) {
+        document.getElementById('resultado').innerHTML = "Por favor ingresa todos los valores correctamente.";
+        return;
+      }
+      const radio = diametro / 2;
+      const volumenPiesCubicos = Math.PI * Math.pow(radio, 2) * altura;
+      const yardasCubicas = volumenPiesCubicos / 27;
+      document.getElementById('resultado').innerHTML = `
+        <strong>Resultado (Cilindro):</strong><br>
+        Volumen en pies cúbicos: ${volumenPiesCubicos.toFixed(2)}<br>
+        Yardas cúbicas necesarias: <strong>${yardasCubicas.toFixed(2)}</strong><br>
+        <small>Fórmula usada: π × radio² × altura, luego dividir entre 27 para obtener yardas cúbicas.</small>
+      `;
+    }
+
+    function calcularRectangulo() {
+      const largo = parseFloat(document.getElementById('largo').value);
+      const altura = parseFloat(document.getElementById('alturaRect').value);
+      const espesor = parseFloat(document.getElementById('espesor').value);
+      if (isNaN(largo) || isNaN(altura) || isNaN(espesor)) {
+        document.getElementById('resultado').innerHTML = "Por favor ingresa todos los valores correctamente.";
+        return;
+      }
+      const volumenPiesCubicos = largo * altura * espesor;
+      const yardasCubicas = volumenPiesCubicos / 27;
+      document.getElementById('resultado').innerHTML = `
+        <strong>Resultado (Rectángulo):</strong><br>
+        Volumen en pies cúbicos: ${volumenPiesCubicos.toFixed(2)}<br>
+        Yardas cúbicas necesarias: <strong>${yardasCubicas.toFixed(2)}</strong><br>
+        <small>Fórmula usada: Largo × Altura × Espesor, luego dividir entre 27.</small>
+      `;
+    }
+
+    function calcularAreas() {
+      const radioCirculo = parseFloat(document.getElementById('radioCirculo').value);
+      const baseRectangulo = parseFloat(document.getElementById('baseRectangulo').value);
+      const alturaRectangulo = parseFloat(document.getElementById('alturaRectangulo').value);
+      const ladoCuadrado = parseFloat(document.getElementById('ladoCuadrado').value);
+
+      let resultado = "<strong>Áreas Calculadas:</strong><br>";
+
+      if (!isNaN(radioCirculo)) {
+        const areaCirculo = Math.PI * Math.pow(radioCirculo, 2);
+        resultado += `Área de círculo: ${areaCirculo.toFixed(2)} pies cuadrados <small>(π × radio²)</small><br>`;
+      }
+      if (!isNaN(baseRectangulo) && !isNaN(alturaRectangulo)) {
+        const areaRectangulo = baseRectangulo * alturaRectangulo;
+        resultado += `Área de rectángulo: ${areaRectangulo.toFixed(2)} pies cuadrados <small>(base × altura)</small><br>`;
+      }
+      if (!isNaN(ladoCuadrado)) {
+        const areaCuadrado = Math.pow(ladoCuadrado, 2);
+        resultado += `Área de cuadrado: ${areaCuadrado.toFixed(2)} pies cuadrados <small>(lado²)</small><br>`;
+      }
+
+      if (resultado === "<strong>Áreas Calculadas:</strong><br>") {
+        resultado = "Por favor ingresa al menos un valor para calcular.";
+      }
+
+      document.getElementById('resultado').innerHTML = resultado;
+    }
+  </script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      max-width: 700px;
+      margin: auto;
+      background-color: #f9fafb;
+    }
+    h1, h2 {
+      text-align: center;
+    }
+    .card {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+      margin-bottom: 20px;
+    }
+    input[type="number"] {
+      width: 100%;
+      padding: 8px;
+      margin: 5px 0 15px 0;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+    button, select {
+      width: 100%;
+      padding: 10px;
+      background-color: #4f46e5;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+      margin-bottom: 10px;
+    }
+    button:hover {
+      background-color: #4338ca;
+    }
+    select {
+      background-color: #6366f1;
+    }
+    .resultado, .formula {
+      margin-top: 20px;
+    }
+    .formula small, .resultado small {
+      display: block;
+      color: #666;
+      margin-top: 5px;
+    }
+    footer {
+      text-align: center;
+      margin-top: 30px;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+  <h1>Calculadora de Yardas Cúbicas H-G CONCRETE</h1>
+
+  <div class="card">
+    <h2>Selecciona qué quieres calcular:</h2>
+    <select onchange="mostrarFormulario(this.value)">
+      <option value="">-- Elige una opción --</option>
+      <option value="rectangulo">Volumen de Pared (Rectángulo)</option>
+      <option value="cilindro">Volumen de Cilindro (Columna)</option>
+      <option value="areas">Áreas en pies cuadrados</option>
+    </select>
+  </div>
+
+  <div class="card" id="formularioRectangulo" style="display:none;">
+    <h2>Cálculo para Pared</h2>
+    <label for="largo">Largo (pies):</label>
+    <input type="number" id="largo" step="0.01">
+
+    <label for="alturaRect">Altura (pies):</label>
+    <input type="number" id="alturaRect" step="0.01">
+
+    <label for="espesor">Espesor (pies):</label>
+    <input type="number" id="espesor" step="0.01">
+
+    <button onclick="calcularRectangulo()">Calcular Volumen Rectángulo</button>
+  </div>
+
+  <div class="card" id="formularioCilindro" style="display:none;">
+    <h2>Cálculo para Cilindro</h2>
+    <label for="diametro">Diámetro (pies):</label>
+    <input type="number" id="diametro" step="0.01">
+
+    <label for="alturaCilindro">Altura (pies):</label>
+    <input type="number" id="alturaCilindro" step="0.01">
+
+    <button onclick="calcularCilindro()">Calcular Volumen Cilindro</button>
+  </div>
+
+  <div class="card" id="formularioAreas" style="display:none;">
+    <h2>Cálculo de Áreas en pies cuadrados</h2>
+    <label for="radioCirculo">Radio del círculo (pies):</label>
+    <input type="number" id="radioCirculo" step="0.01">
+
+    <label for="baseRectangulo">Base del rectángulo (pies):</label>
+    <input type="number" id="baseRectangulo" step="0.01">
+
+    <label for="alturaRectangulo">Altura del rectángulo (pies):</label>
+    <input type="number" id="alturaRectangulo" step="0.01">
+
+    <label for="ladoCuadrado">Lado del cuadrado (pies):</label>
+    <input type="number" id="ladoCuadrado" step="0.01">
+
+    <button onclick="calcularAreas()">Calcular Áreas</button>
+  </div>
+
+  <div class="card formula">
+    <h2>Fórmulas utilizadas:</h2>
+    <p><strong>Para pared (rectángulo):</strong><br>
+      Volumen (pies³) = Largo × Altura × Espesor<br>
+      Yardas cúbicas = Volumen (pies³) ÷ 27
+    </p>
+    <p><strong>Para cilindro:</strong><br>
+      Volumen (pies³) = π × radio² × altura<br>
+      (Radio = Diámetro ÷ 2)<br>
+      Yardas cúbicas = Volumen (pies³) ÷ 27
+    </p>
+    <p><strong>Para áreas:</strong><br>
+      Área círculo = π × radio²<br>
+      Área rectángulo = base × altura<br>
+      Área cuadrado = lado²
+    </p>
+  </div>
+
+  <div id="resultado" class="card resultado"></div>
+
+  <footer>
+    &copy; 2025 H-G Concrete | Herramienta gratuita de cálculo de concreto.
+  </footer>
+</body>
+</html>
